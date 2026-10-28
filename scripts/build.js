@@ -52,11 +52,7 @@ function indexContent(posts) {
         <div class="meta"><time datetime="${escapeHtml(p.date)}">${formatDate(p.date)}</time><span>${p.minutes}분 읽기</span></div>
         ${p.description ? `<p>${escapeHtml(p.description)}</p>` : ''}
       </li>`).join('');
-  return `    <section class="hero">
-      <h1>${SITE_NAME}</h1>
-      <p>배운 것과 만든 것을 기록합니다.</p>
-    </section>
-    <ul class="post-list">${items}\n    </ul>`;
+  return `    <h1 class="page-title">글 목록</h1>\n    <ul class="post-list">${items}\n    </ul>`;
 }
 
 function postContent(p, newer, older) {
