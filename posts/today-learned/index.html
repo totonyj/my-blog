@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>오늘 배운 것 · My Blog</title>
+  <meta name="description" content="클로드 코드로 블로그를 만들면서 배운 HTML, CSS, JS의 역할을 간단히 정리했습니다.">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // 첫 페인트 전에 테마를 적용해 깜빡임을 막는다
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="site-title" href="../../index.html">My Blog</a>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="다크모드 전환">
+        <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></svg>
+      </button>
+    </div>
+  </header>
+  <main id="main" class="container">
+    <article>
+      <header class="post-header">
+        <h1 class="post-title">오늘 배운 것</h1>
+        <div class="meta"><time datetime="2026-10-27">2026년 10월 27일</time><span>1분 읽기</span></div>
+        <ul class="tags"><li class="tag">HTML</li><li class="tag">CSS</li><li class="tag">JavaScript</li><li class="tag">클로드 코드</li></ul>
+      </header>
+      <div class="prose">
+<p>클로드 코드와 함께 마크다운 글을 블로그로 바꿔 주는 프로젝트를 만들었습니다. 프레임워크 없이 HTML, CSS, JavaScript만 썼더니 각각이 맡는 역할이 또렷하게 보였습니다.</p>
+<h2>HTML: 내용과 구조</h2>
+<p>HTML은 페이지에 <strong>무엇이 있는지</strong>를 정합니다.</p>
+<ul><li><code>header</code>, <code>main</code>, <code>article</code>, <code>footer</code> 같은 시맨틱 태그로 글의 구조를 표현합니다</li><li>제목, 문단, 목록, 표, 이미지가 모두 HTML 요소입니다</li><li>이 블로그에서는 마크다운을 HTML로 바꾸는 것이 핵심 작업이었습니다</li></ul>
+<h2>CSS: 모양과 반응형</h2>
+<p>CSS는 <strong>어떻게 보이는지</strong>를 정합니다.</p>
+<ul><li>색, 글꼴, 간격을 <code>:root</code>의 CSS 변수로 모아 두면 테마를 바꾸기 쉽습니다</li><li>라이트와 다크 색을 변수 값만 바꿔서 전환합니다</li><li><code>@media</code> 쿼리로 모바일 화면과 데스크톱 화면에 맞게 배치를 조절합니다</li><li>한글은 <code>word-break: keep-all</code>로 단어 단위로 줄바꿈해야 읽기 편합니다</li></ul>
+<h2>JavaScript: 동작</h2>
+<p>JavaScript는 <strong>무엇이 움직이는지</strong>를 맡습니다.</p>
+<ul><li>다크모드 버튼을 누르면 <code>data-theme</code> 값을 바꾸고 <code>localStorage</code>에 저장합니다</li><li>페이지를 열 때 저장된 테마를 먼저 적용하면 화면이 깜빡이지 않습니다</li><li>Node.js 빌드 스크립트가 마크다운 파일을 읽어 HTML 파일로 만들어 줍니다</li></ul>
+<h2>한눈에 보기</h2>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">기술</th><th style="text-align:left">역할</th><th style="text-align:left">이 블로그에서</th></tr></thead><tbody><tr><td style="text-align:left">HTML</td><td style="text-align:left">구조</td><td style="text-align:left">글 본문과 페이지 뼈대</td></tr><tr><td style="text-align:left">CSS</td><td style="text-align:left">모양</td><td style="text-align:left">다크모드, 모바일 대응</td></tr><tr><td style="text-align:left">JS</td><td style="text-align:left">동작</td><td style="text-align:left">테마 전환, 마크다운 변환</td></tr></tbody></table></div>
+<blockquote><p>역할을 나눠서 생각하면 문제가 생겼을 때 어디를 고쳐야 할지 금방 보입니다.</p></blockquote>
+<h2>정리</h2>
+<p>화면이 이상하면 CSS, 내용이 틀리면 HTML이나 변환 스크립트, 동작이 안 되면 JavaScript를 먼저 확인하면 됩니다.</p>
+      </div>
+    </article>
+    <nav class="post-nav" aria-label="이전·다음 글">
+      <a class="prev" href="../markdown-showcase/index.html"><small>← 이전 글</small>마크다운 문법 모아보기</a>
+      <a class="next" href="../ai-news/index.html"><small>다음 글 →</small>2026-10-28 AI 뉴스 브리핑</a>
+    </nav>
+  </main>
+  <footer class="site-footer">
+    <div class="container">© 2026 My Blog</div>
+  </footer>
+  <script src="../../js/theme.js"></script>
+</body>
+</html>
