@@ -50,13 +50,23 @@
         <p>마크다운으로 글을 쓰고 정적 사이트로 발행하는 나만의 블로그를 만들었습니다.</p>
       </li>
     </ul>
-    <h2 class="page-title">웹앱</h2>
-    <ul class="post-list">
-      <li class="post-item">
-        <h2><a href="apps/2048/index.html">2048</a></h2>
-        <p>방향키나 스와이프로 숫자 타일을 밀어 합치는 2048 퍼즐 게임</p>
-      </li>
-    </ul>
+    <section class="apps">
+      <h2 class="page-title">웹앱</h2>
+      <ul class="app-grid">
+        <li class="app-card">
+          <a class="app-card-link" href="apps/2048/index.html">
+            <div class="app-preview" aria-hidden="true" inert>
+              <iframe src="apps/2048/index.html" title="" tabindex="-1" loading="lazy" scrolling="no"></iframe>
+            </div>
+            <div class="app-info">
+              <span class="app-badge">웹앱</span>
+              <h3>2048</h3>
+              <p>방향키나 스와이프로 숫자 타일을 밀어 합치는 2048 퍼즐 게임</p>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </section>
   </main>
   <footer class="site-footer">
     <div class="container">© 2026 My Blog</div>
