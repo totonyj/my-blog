@@ -7,6 +7,7 @@ import { escapeHtml, parseFrontMatter, renderMarkdown } from './markdown.js';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS = path.join(ROOT, 'posts');
 const SRC = path.join(ROOT, 'src');
+const APPS = path.join(ROOT, 'apps');
 const DIST = path.join(ROOT, 'dist');
 const SITE_NAME = 'My Blog';
 
@@ -45,14 +46,49 @@ async function loadPosts() {
   return posts.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 }
 
-function indexContent(posts) {
+// apps/*/index.html 의 <title>과 <meta name="description">을 홈 목록에 쓴다 (우리 파일이라 이스케이프된 상태 그대로 사용)
+async function loadApps() {
+  let dirs;
+  try {
+    dirs = (await readdir(APPS, { withFileTypes: true })).filter((d) => d.isDirectory()).map((d) => d.name).sort();
+  } catch {
+    return [];
+  }
+  const apps = [];
+  for (const dir of dirs) {
+    let html;
+    try {
+      html = await readFile(path.join(APPS, dir, 'index.html'), 'utf8');
+    } catch {
+      continue;
+    }
+    apps.push({
+      dir,
+      title: (html.match(/<title>([^<]*)<\/title>/i) || [])[1]?.trim() || dir,
+      description: (html.match(/<meta\s+name="description"\s+content="([^"]*)"/i) || [])[1] || '',
+    });
+  }
+  return apps;
+}
+
+function appsContent(apps) {
+  if (!apps.length) return '';
+  const items = apps.map((a) => `
+      <li class="post-item">
+        <h2><a href="apps/${a.dir}/index.html">${a.title}</a></h2>
+        ${a.description ? `<p>${a.description}</p>` : ''}
+      </li>`).join('');
+  return `\n    <h2 class="page-title">웹앱</h2>\n    <ul class="post-list">${items}\n    </ul>`;
+}
+
+function indexContent(posts, apps) {
   const items = posts.map((p) => `
       <li class="post-item">
         <h2><a href="posts/${p.slug}/index.html">${escapeHtml(p.title)}</a></h2>
         <div class="meta"><time datetime="${escapeHtml(p.date)}">${formatDate(p.date)}</time><span>${p.minutes}분 읽기</span></div>
         ${p.description ? `<p>${escapeHtml(p.description)}</p>` : ''}
       </li>`).join('');
-  return `    <h1 class="page-title">글 목록</h1>\n    <ul class="post-list">${items}\n    </ul>`;
+  return `    <h1 class="page-title">글 목록</h1>\n    <ul class="post-list">${items}\n    </ul>${appsContent(apps)}`;
 }
 
 function postContent(p, newer, older) {
@@ -77,6 +113,7 @@ ${p.html}
 async function main() {
   const layout = await readFile(path.join(SRC, 'templates', 'layout.html'), 'utf8');
   const posts = await loadPosts();
+  const apps = await loadApps();
   const year = new Date().getFullYear();
   const base = { siteName: SITE_NAME, year };
 
@@ -87,10 +124,11 @@ async function main() {
   }
   await cp(path.join(SRC, 'css'), path.join(DIST, 'css'), { recursive: true });
   await cp(path.join(SRC, 'js'), path.join(DIST, 'js'), { recursive: true });
+  if (apps.length) await cp(APPS, path.join(DIST, 'apps'), { recursive: true });
 
   await writeFile(
     path.join(DIST, 'index.html'),
-    fill(layout, { ...base, root: './', title: SITE_NAME, description: `${SITE_NAME} 글 목록`, content: indexContent(posts) })
+    fill(layout, { ...base, root: './', title: SITE_NAME, description: `${SITE_NAME} 글 목록`, content: indexContent(posts, apps) })
   );
 
   for (let i = 0; i < posts.length; i++) {
@@ -109,7 +147,7 @@ async function main() {
     );
   }
 
-  console.log(`빌드 완료: 글 ${posts.length}개 → ${path.relative(ROOT, DIST)}/`);
+  console.log(`빌드 완료: 글 ${posts.length}개, 앱 ${apps.length}개 → ${path.relative(ROOT, DIST)}/`);
 }
 
 main().catch((err) => {
