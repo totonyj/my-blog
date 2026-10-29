@@ -1,0 +1,138 @@
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f9;
+  --text: #1f2328;
+  --text-muted: #5d6673;
+  --border: #e3e6ea;
+  --accent: #2f6fed;
+  --accent-text: #ffffff;
+  --check-a: #e9ecf1;
+  --check-b: #cdd3db;
+  --grid-line: rgba(31, 35, 40, 0.28);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
+  --radius: 8px;
+  --gap: 0.5rem;
+}
+
+:root[data-theme="dark"] {
+  --bg: #14161a;
+  --surface: #1c1f24;
+  --text: #e6e8eb;
+  --text-muted: #9aa3ae;
+  --border: #2d3138;
+  --accent: #7aa7ff;
+  --accent-text: #0e1116;
+  --check-a: #2a2e36;
+  --check-b: #20242a;
+  --grid-line: rgba(230, 232, 235, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a;
+    --surface: #1c1f24;
+    --text: #e6e8eb;
+    --text-muted: #9aa3ae;
+    --border: #2d3138;
+    --accent: #7aa7ff;
+    --accent-text: #0e1116;
+    --check-a: #2a2e36;
+    --check-b: #20242a;
+    --grid-line: rgba(230, 232, 235, 0.3);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  overflow-x: hidden;
+}
+
+.app {
+  --board: min(92vw, 480px);
+  width: var(--board);
+  margin: 0 auto;
+  padding: 0.5rem 0 2rem;
+}
+
+button { font: inherit; }
+button:focus-visible,
+input[type="color"]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.back-link {
+  display: inline-flex; align-items: center; min-height: 44px;
+  color: var(--text-muted); font-size: 0.9rem; text-decoration: none;
+}
+.back-link:hover { color: var(--accent); }
+.back-link:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.title {
+  margin: 0 0 0.5rem; font-size: 1.35rem; line-height: 1.2; letter-spacing: -0.01em;
+  color: var(--accent); white-space: nowrap;
+}
+
+/* 캔버스 + 투명 체크무늬 (한 칸 = 체크 한 칸) */
+.canvas {
+  display: block;
+  width: var(--board); height: var(--board);
+  image-rendering: pixelated;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  cursor: crosshair;
+  background-color: var(--check-a);
+  background-image: conic-gradient(var(--check-a) 25%, var(--check-b) 0 50%, var(--check-a) 0 75%, var(--check-b) 0);
+  background-size: 12.5% 12.5%;
+}
+
+.status {
+  margin: 0.4rem 0 0.5rem; min-height: 1.5em;
+  color: var(--text-muted); font-size: 0.9rem;
+}
+
+.toolbar { display: flex; flex-wrap: wrap; gap: var(--gap); margin-bottom: var(--gap); }
+
+.btn {
+  min-height: 44px; min-width: 44px; padding: 0 1.1rem;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; font-weight: 600;
+}
+.btn:hover:not(:disabled) { border-color: var(--accent); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+.btn-primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+
+/* 팔레트 */
+.palette-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap); margin: 0.75rem 0; }
+.palette { display: flex; flex-wrap: wrap; gap: 12px 10px; padding: 6px 0; }
+.swatch {
+  width: 44px; height: 44px; padding: 0; cursor: pointer;
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.swatch[aria-pressed="true"] {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent);
+}
+.custom-color { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; }
+.custom-label { font-size: 0.9rem; color: var(--text-muted); }
+.custom-color input[type="color"][data-active="true"] {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent);
+}
+.custom-color input[type="color"] {
+  width: 44px; height: 44px; padding: 2px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+
+.save-row { margin-top: 0.75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
