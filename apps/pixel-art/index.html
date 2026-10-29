@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>픽셀 아트 에디터</title>
+  <meta name="description" content="16×16 격자에 도트를 찍어 그림을 그리고 PNG로 저장하는 픽셀 아트 에디터">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <a class="back-link" href="../../index.html">← My Blog</a>
+    <h1 class="title">픽셀 아트 에디터</h1>
+
+    <canvas id="canvas" class="canvas" width="512" height="512" role="img" aria-label="16×16 픽셀 아트 캔버스 (마우스나 터치로 그리기)"></canvas>
+    <p class="status" id="status" aria-live="polite"></p>
+
+    <div class="toolbar" role="group" aria-label="도구">
+      <button type="button" class="btn tool-btn" data-tool="pencil" aria-pressed="true" aria-label="연필">연필</button>
+      <button type="button" class="btn tool-btn" data-tool="eraser" aria-pressed="false" aria-label="지우개">지우개</button>
+      <button type="button" class="btn tool-btn" data-tool="fill" aria-pressed="false" aria-label="채우기">채우기</button>
+    </div>
+
+    <div class="toolbar" role="group" aria-label="편집">
+      <button type="button" class="btn" id="undo" disabled>되돌리기</button>
+      <button type="button" class="btn" id="clear">전체 지우기</button>
+      <button type="button" class="btn" id="grid-toggle" aria-pressed="true">격자선</button>
+    </div>
+
+    <div class="palette-wrap">
+      <div class="palette" id="palette" role="group" aria-label="색 팔레트"></div>
+      <label class="custom-color">
+        <span class="custom-label">직접 고르기</span>
+        <input type="color" id="custom-color" value="#000000" aria-label="직접 색 고르기">
+      </label>
+    </div>
+
+    <div class="save-row">
+      <button type="button" class="btn btn-primary" id="save">PNG 저장</button>
+    </div>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
