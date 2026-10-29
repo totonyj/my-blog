@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2048</title>
+  <meta name="description" content="방향키나 스와이프로 숫자 타일을 밀어 합치는 2048 퍼즐 게임">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <a class="back-link" href="../../index.html">← My Blog</a>
+    <header class="top">
+      <h1 class="title">2048</h1>
+      <div class="scores">
+        <div class="score-box">
+          <span class="score-label">점수</span>
+          <span class="score-value" id="score" aria-live="polite" aria-atomic="true">0</span>
+          <span class="score-gain" id="score-gain" aria-hidden="true"></span>
+        </div>
+        <div class="score-box">
+          <span class="score-label">최고 점수</span>
+          <span class="score-value" id="best">0</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="size-picker" role="group" aria-label="보드 크기">
+        <button type="button" class="size-btn" data-size="3" aria-pressed="false">3×3</button>
+        <button type="button" class="size-btn" data-size="4" aria-pressed="true">4×4</button>
+        <button type="button" class="size-btn" data-size="5" aria-pressed="false">5×5</button>
+      </div>
+      <button type="button" class="btn btn-primary" id="new-game">새 게임</button>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board" role="group" aria-label="게임 보드" tabindex="-1">
+        <div class="cells" id="cells" aria-hidden="true"></div>
+        <div class="tiles" id="tiles"></div>
+      </div>
+      <div class="overlay" id="overlay" role="alertdialog" aria-modal="true" aria-labelledby="overlay-title" hidden>
+        <div class="overlay-box">
+          <p class="overlay-title" id="overlay-title"></p>
+          <p class="overlay-desc" id="overlay-desc"></p>
+          <div class="overlay-actions">
+            <button type="button" class="btn btn-primary" id="overlay-primary"></button>
+            <button type="button" class="btn" id="overlay-secondary" hidden></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="help" id="help">방향키(↑↓←→) 또는 보드 위 스와이프로 타일을 밀어 같은 숫자끼리 합치세요.</p>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
