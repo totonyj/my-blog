@@ -73,12 +73,21 @@ async function loadApps() {
 
 function appsContent(apps) {
   if (!apps.length) return '';
-  const items = apps.map((a) => `
-      <li class="post-item">
-        <h2><a href="apps/${a.dir}/index.html">${a.title}</a></h2>
-        ${a.description ? `<p>${a.description}</p>` : ''}
-      </li>`).join('');
-  return `\n    <h2 class="page-title">웹앱</h2>\n    <ul class="post-list">${items}\n    </ul>`;
+  // 미리보기는 실제 앱 페이지를 축소해서 보여 주는 iframe. inert로 클릭·포커스를 막아 카드 링크만 동작하게 한다
+  const cards = apps.map((a) => `
+        <li class="app-card">
+          <a class="app-card-link" href="apps/${a.dir}/index.html">
+            <div class="app-preview" aria-hidden="true" inert>
+              <iframe src="apps/${a.dir}/index.html" title="" tabindex="-1" loading="lazy" scrolling="no"></iframe>
+            </div>
+            <div class="app-info">
+              <span class="app-badge">웹앱</span>
+              <h3>${a.title}</h3>
+              ${a.description ? `<p>${a.description}</p>` : ''}
+            </div>
+          </a>
+        </li>`).join('');
+  return `\n    <section class="apps">\n      <h2 class="page-title">웹앱</h2>\n      <ul class="app-grid">${cards}\n      </ul>\n    </section>`;
 }
 
 function indexContent(posts, apps) {
